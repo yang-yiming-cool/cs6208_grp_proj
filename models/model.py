@@ -8,67 +8,6 @@ from models.layers import Embedding, VisualProjection, FeatureEncoder, CQAttenti
 from models.layers import DualAttentionBlock, WordEmbedding
 from models.cpl_lib import TransformerDecoder, _generate_mask, SinusoidalPositionalEmbedding
 
-
-# from models.layers_vsl import *
-# class VSLNet(nn.Module):
-#     def __init__(self, configs, word_vectors):
-#         super(VSLNet, self).__init__()
-#         self.configs = configs
-#         self.embedding_net = Embedding(num_words=configs.num_words, num_chars=configs.num_chars, out_dim=configs.model.dim,
-#                                        word_dim=configs.model.word_dim, char_dim=configs.model.char_dim, 
-#                                        word_vectors=word_vectors,
-#                                        drop_rate=configs.droprate)
-
-
-
-#         self.video_affine = VisualProjection(visual_dim=configs.model.vdim, dim=configs.model.dim,
-#                                              drop_rate=configs.droprate)
-#         self.feature_encoder = FeatureEncoder(dim=configs.dim, num_heads=configs.model.num_heads, kernel_size=7, num_layers=4,
-#                                               max_pos_len=configs.model.vlen, drop_rate=configs.drop_rate)
-
-                                              
-#         self.cq_attention = CQAttention(dim=configs.dim, drop_rate=configs.drop_rate)
-#         self.cq_concat = CQConcatenate(dim=configs.dim)
-#         self.highlight_layer = HighLightLayer(dim=configs.dim)
-#         self.predictor = ConditionedPredictor(dim=configs.dim, num_heads=configs.model.num_heads, drop_rate=configs.drop_rate,
-#                                               max_pos_len=configs.model.vlen, predictor=configs.predictor)
-#         self.init_parameters()
-
-#     def init_parameters(self):
-#         def init_weights(m):
-#             if isinstance(m, nn.Conv2d) or isinstance(m, nn.Conv1d) or isinstance(m, nn.Linear):
-#                 torch.nn.init.xavier_uniform_(m.weight)
-#                 if m.bias is not None:
-#                     torch.nn.init.zeros_(m.bias)
-#             elif isinstance(m, nn.LSTM):
-#                 m.reset_parameters()
-#         self.apply(init_weights)
-
-#     def forward(self, word_ids, char_ids, video_features, v_mask, q_mask):
-#         video_features = self.video_affine(video_features)
-#         query_features = self.embedding_net(word_ids, char_ids)
-#         video_features = self.feature_encoder(video_features, mask=v_mask)
-#         query_features = self.feature_encoder(query_features, mask=q_mask)
-#         features = self.cq_attention(video_features, query_features, v_mask, q_mask)
-#         features = self.cq_concat(features, query_features, q_mask)
-#         h_score = self.highlight_layer(features, v_mask)
-#         # features = features * h_score.unsqueeze(2)
-#         start_logits, end_logits = self.predictor(features, mask=v_mask)
-#         return start_logits, end_logits
-
-
-    
-
-        # vfeat_ = self.dual_attention_block_1(vfeat, tfeat, vmask, tmask)
-        # tfeat_ = self.dual_attention_block_1(tfeat, vfeat, tmask, vmask)
-        # vfeat, tfeat = vfeat_, tfeat_
-
-        # vfeat_ = self.dual_attention_block_2(vfeat, tfeat, vmask, tmask)
-        # tfeat_ = self.dual_attention_block_2(tfeat, vfeat, tmask, vmask)
-        # vfeat, tfeat = vfeat_, tfeat_
-
-
-
 class CPL(nn.Module):
     def __init__(self, configs, word_vectors):
         super(CPL, self).__init__()
